@@ -6,13 +6,16 @@
         <p class="text-xs-center">
           <a [routerLink]="['/login']">Have an account?</a>
         </p>
-       <!-- Backend errors are here-->
-        <form [formGroup]='form' (ngSubmit)='onSubmit()' class="ng-untouched ng-pristine ng-invalid">
+        <app-backend-error-messages
+          *ngIf="backendErrors$ | async"
+          [backendErrors]="backendErrors$ | async"
+        ></app-backend-error-messages>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="ng-untouched ng-pristine ng-invalid">
           <fieldset>
             <fieldset class="form-group">
               <input
                 class="form-control form-control-lg ng-untouched ng-pristine ng-valid"
-                formcontrolname="userName"
+                formControlName="username"
                 placeholder="Username"
                 type="text"
               />
@@ -20,7 +23,7 @@
             <fieldset class="form-group">
               <input
                 class="form-control form-control-lg ng-untouched ng-pristine ng-invalid"
-                formcontrolname="email"
+                formControlName="email"
                 placeholder="Email"
                 type="text"
               />
@@ -28,12 +31,14 @@
             <fieldset class="form-group">
               <input
                 class="form-control form-control-lg ng-untouched ng-pristine ng-invalid"
-                formcontrolname="password"
+                formControlName="password"
                 placeholder="Password"
                 type="password"
               />
             </fieldset>
-            <button class="btn btn-lg btn-primary pull-xs-right" type="submit">Sign up</button>
+            <button class="btn btn-lg btn-primary pull-xs-right" type="submit" [disabled]="isSubmitting$ | async">
+              Sign up
+            </button>
           </fieldset>
         </form>
       </div>
