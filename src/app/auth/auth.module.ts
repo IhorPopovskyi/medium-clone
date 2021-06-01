@@ -5,14 +5,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { RegisterEffects } from './store/register.effects';
-import { registerReducers } from './store/register.reducers';
+import { RegisterEffects } from './store/effects/register.effects';
+import { LoginEffects } from './store/effects/login.effects';
+import { authReducers } from './store/auth.reducers';
 import { RegisterComponent } from './components/register/register.component';
-import { BackendErrorMessagesModule } from '../shared/modules/backendErrorMessages/backendErrorMessages.module';
+import { BackendErrorMessagesModule } from '../shared/modules/backendErrorMessages/backend-error-messages.module';
 import { AuthService } from './services/auth.service';
 import { PersistenceService } from '../shared/services/persistence.service';
+import { LoginComponent } from './components/login/login.component';
+import { GetCurrentUserEffects } from './store/effects/get-current-user.effects';
 
-const routes: Routes = [{ path: 'register', component: RegisterComponent }];
+const routes: Routes = [
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent }
+];
 
 @NgModule({
   imports: [
@@ -20,10 +26,10 @@ const routes: Routes = [{ path: 'register', component: RegisterComponent }];
     RouterModule.forChild(routes),
     ReactiveFormsModule,
     BackendErrorMessagesModule,
-    StoreModule.forFeature('auth', registerReducers),
-    EffectsModule.forFeature([RegisterEffects])
+    StoreModule.forFeature('auth', authReducers),
+    EffectsModule.forFeature([RegisterEffects, LoginEffects, GetCurrentUserEffects])
   ],
-  declarations: [RegisterComponent],
+  declarations: [RegisterComponent, LoginComponent],
   providers: [AuthService, PersistenceService]
 })
 export class AuthModule {}
