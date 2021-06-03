@@ -9,18 +9,20 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
-import { TopBarModule } from './shared/modules/topBar/top-bar.module';
 import { AuthInterceptor } from './shared/services/auth.interceptor';
 import { PersistenceService } from './shared/services/persistence.service';
+import { TopBarModule } from './shared/modules/top-bar/top-bar.module';
+import { GlobalFeedModule } from './global-feed/global-feed.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     AuthModule,
     TopBarModule,
-    HttpClientModule,
+    GlobalFeedModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({

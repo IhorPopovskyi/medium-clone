@@ -9,11 +9,11 @@ import { RegisterEffects } from './store/effects/register.effects';
 import { LoginEffects } from './store/effects/login.effects';
 import { authReducers } from './store/auth.reducers';
 import { RegisterComponent } from './components/register/register.component';
-import { BackendErrorMessagesModule } from '../shared/modules/backendErrorMessages/backend-error-messages.module';
 import { AuthService } from './services/auth.service';
 import { PersistenceService } from '../shared/services/persistence.service';
 import { LoginComponent } from './components/login/login.component';
 import { GetCurrentUserEffects } from './store/effects/get-current-user.effects';
+import { BackendErrorMessagesModule } from '../shared/modules/backend-error-messages/backend-error-messages.module';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
