@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { getFeedAction } from '../../store/actions/get-feed-actions';
+import { getFeedAction } from '../../store/actions/get-feed.actions';
 import { Observable, Subscription } from 'rxjs';
 import { GetFeedResponseInterface } from '../../types/get-feed-response.interface';
 import { errorSelector, feedSelector, isLoadingSelector } from '../../store/selectors';

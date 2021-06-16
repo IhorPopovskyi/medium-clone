@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeedService } from '../../../../services/feed.service';
-import { getFeedAction, getFeedActionFailure, getFeedActionSuccess } from '../actions/get-feed-actions';
+import { getFeedAction, getFeedActionFailure, getFeedActionSuccess } from '../actions/get-feed.actions';
 import { GetFeedResponseInterface } from '../../types/get-feed-response.interface';
 
 @Injectable()
