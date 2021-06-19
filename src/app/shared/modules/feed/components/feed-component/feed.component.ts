@@ -23,6 +23,7 @@ export class FeedComponent implements OnInit, OnDestroy, OnChanges {
   baseUrl: string;
   currentPage: number;
   queryParamsSubscription: Subscription;
+  preventAdditionalFetch = false;
 
   constructor(private store: Store, private router: Router, private route: ActivatedRoute) {}
 
@@ -32,10 +33,17 @@ export class FeedComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    const isAPiUrlChanged = !changes.apiUrl.firstChange && changes.apiUrl.currentValue !== changes.apiUrl.previousValue;
-    if (isAPiUrlChanged) {
+    // const isAPiUrlChanged = !changes.apiUrl.firstChange && changes.apiUrl.currentValue !== changes.apiUrl.previousValue;
+    // if (isAPiUrlChanged) {
+    //   this.fetchFeed();
+    // }
+
+    const isApiUrlChanged =
+      !changes.apiUrl.firstChange &&
+      changes.apiUrl.currentValue !== changes.apiUrl.previousValue;
+    if (isApiUrlChanged) {
       this.fetchFeed();
+      this.preventAdditionalFetch = true;
     }
   }
 
@@ -47,10 +55,21 @@ export class FeedComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   initializeListeners(): void {
-    this.queryParamsSubscription = this.route.queryParams.subscribe((params: Params) => {
-      this.currentPage = Number(params.page || '1');
-      this.fetchFeed();
-    });
+    // this.queryParamsSubscription = this.route.queryParams.subscribe((params: Params) => {
+    //   this.currentPage = Number(params.page || '1');
+    //   this.fetchFeed();
+    // });
+
+    this.queryParamsSubscription = this.route.queryParams.subscribe(
+      (params: Params) => {
+        setTimeout(() => {
+          this.currentPage = Number(params.page || '1');
+          if (!this.preventAdditionalFetch) {
+            this.fetchFeed();
+          }
+        }, 0);
+      }
+    );
   }
 
   fetchFeed(): void {
@@ -63,6 +82,7 @@ export class FeedComponent implements OnInit, OnDestroy, OnChanges {
     });
     const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
     this.store.dispatch(getFeedAction({ url: apiUrlWithParams }));
+    this.preventAdditionalFetch = false;
   }
 
   ngOnDestroy(): void {
