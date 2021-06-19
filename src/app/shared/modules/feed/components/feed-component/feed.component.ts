@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { getFeedAction } from '../../store/actions/get-feed.actions';
 import { Observable, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { parseUrl, stringify } from 'query-string';
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss'],
 })
-export class FeedComponent implements OnInit, OnDestroy {
+export class FeedComponent implements OnInit, OnDestroy, OnChanges {
   @Input() apiUrl: string;
 
   isLoading$: Observable<boolean>;
@@ -22,13 +22,21 @@ export class FeedComponent implements OnInit, OnDestroy {
   limit = environment.limit;
   baseUrl: string;
   currentPage: number;
-  subscriptions: Subscription[] = [];
+  queryParamsSubscription: Subscription;
 
   constructor(private store: Store, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.initializeValues();
     this.initializeListeners();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    const isAPiUrlChanged = !changes.apiUrl.firstChange && changes.apiUrl.currentValue !== changes.apiUrl.previousValue;
+    if (isAPiUrlChanged) {
+      this.fetchFeed();
+    }
   }
 
   initializeValues(): void {
@@ -39,12 +47,10 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   initializeListeners(): void {
-    this.subscriptions.push(
-      this.route.queryParams.subscribe((params: Params) => {
-        this.currentPage = Number(params.page || '1');
-        this.fetchFeed();
-      })
-    );
+    this.queryParamsSubscription = this.route.queryParams.subscribe((params: Params) => {
+      this.currentPage = Number(params.page || '1');
+      this.fetchFeed();
+    });
   }
 
   fetchFeed(): void {
@@ -60,6 +66,6 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscriptions: Subscription) => subscriptions.unsubscribe());
+    this.queryParamsSubscription.unsubscribe();
   }
 }

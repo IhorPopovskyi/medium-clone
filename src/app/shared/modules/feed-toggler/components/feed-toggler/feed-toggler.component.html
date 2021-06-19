@@ -8,13 +8,14 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/']" routerLinkActive='active'>
+      <a class="nav-link" [routerLink]="['/']" routerLinkActive='active' [routerLinkActiveOptions]='{exact: true}'>
         Global Feed
       </a>
     </li>
 
     <li class="nav-item" *ngIf="tagName">
       <a class="nav-link" [routerLink]="['/tags', tagName]" routerLinkActive='active'>
+        <i class='ion-pound'></i>
         {{ tagName }}
       </a>
     </li>
