@@ -5,15 +5,17 @@ import { HttpClient } from '@angular/common/http';
 import { GetArticleResponseInterface } from '../types/get-article-response.interface';
 import { ArticleInterface } from '../types/article.interface';
 import { map } from 'rxjs/operators';
+import { ArticleInputInterface } from '../types/article-input.interface';
+import { SaveArticleResponseInterface } from '../types/save-article-response.interface';
 
 @Injectable()
 export class ArticleService {
   constructor(private http: HttpClient) {}
 
   getArticle(slug: string): Observable<ArticleInterface> {
-    const fullUrl = `${environment.apiUrl}/articles/${slug}`;
+    const url = `${environment.apiUrl}/articles/${slug}`;
 
-    return this.http.get<GetArticleResponseInterface>(fullUrl).pipe(
+    return this.http.get<GetArticleResponseInterface>(url).pipe(
       map((response: GetArticleResponseInterface) => {
         return response.article;
       })
@@ -24,5 +26,13 @@ export class ArticleService {
     const url = `${environment.apiUrl}/articles/${slug}`;
 
     return this.http.delete<{}>(url);
+  }
+
+  createArticle(articleInput: ArticleInputInterface): Observable<ArticleInterface> {
+    const url = `${environment.apiUrl}/articles`;
+
+    return this.http
+      .post<SaveArticleResponseInterface>(url, articleInput)
+      .pipe(map((response: SaveArticleResponseInterface) => response.article));
   }
 }
