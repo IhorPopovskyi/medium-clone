@@ -13,3 +13,4 @@ export class FeedService {
     return this.http.get<GetFeedResponseInterface>(fullUrl);
   }
 }
+``
