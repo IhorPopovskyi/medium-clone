@@ -35,4 +35,12 @@ export class ArticleService {
       .post<SaveArticleResponseInterface>(url, articleInput)
       .pipe(map((response: SaveArticleResponseInterface) => response.article));
   }
+
+  editArticle(slug: string, articleInput: ArticleInputInterface): Observable<ArticleInterface> {
+    const url = `${environment.apiUrl}/articles/${slug}`;
+
+    return this.http
+      .put<SaveArticleResponseInterface>(url, articleInput)
+      .pipe(map((response: SaveArticleResponseInterface) => response.article));
+  }
 }
