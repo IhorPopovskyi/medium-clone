@@ -7,6 +7,7 @@ import { CurrentUserInterface } from '../../shared/types/current-user.interface'
 import { AuthResponseInterface } from '../types/auth-response.interface';
 import { RegisterRequestInterface } from '../types/register-request.interface';
 import { LoginRequestInterface } from '../types/login-request.interface';
+import { CurrentUserInputInterface } from '../../shared/types/current-user-input.interface';
 
 @Injectable()
 export class AuthService {
@@ -18,22 +19,22 @@ export class AuthService {
 
   register(data: RegisterRequestInterface): Observable<CurrentUserInterface> {
     const url = `${environment.apiUrl}/users`;
-    return this.http
-      .post<AuthResponseInterface>(url, data)
-      .pipe(map(this.getUser));
+    return this.http.post<AuthResponseInterface>(url, data).pipe(map(this.getUser));
   }
 
   login(data: LoginRequestInterface): Observable<CurrentUserInterface> {
     const url = `${environment.apiUrl}/users/login`;
-    return this.http
-      .post<AuthResponseInterface>(url, data)
-      .pipe(map(this.getUser));
+    return this.http.post<AuthResponseInterface>(url, data).pipe(map(this.getUser));
   }
 
   getCurrentUser(): Observable<CurrentUserInterface> {
     const url = `${environment.apiUrl}/user`;
-    return this.http
-      .get<AuthResponseInterface>(url)
-      .pipe(map(this.getUser));
+    return this.http.get<AuthResponseInterface>(url).pipe(map(this.getUser));
+  }
+
+  updateCurrentUser(currentUserInput: CurrentUserInputInterface): Observable<CurrentUserInterface> {
+    const url = `${environment.apiUrl}/user`;
+
+    return this.http.put(url, currentUserInput).pipe(map(this.getUser));
   }
 }
